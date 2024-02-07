@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minesweeper</title>
+    <link rel="stylesheet" href="css/app.css" />
+</head>
+<body onload="onInit()" >
+    
+    <img class="sea-storm" src="img/sea-storm.gif" alt=""> 
+    <!-- <img class="boat" src="img/USS_YMS-143.png" alt=""> -->
+    <table class="board-container">
+        <div class="top-bar">
+        <div class="lives">🤍🤍🤍</div>
+        <div class="smile">😃</div>
+        <button onclick="onHintClick(this)" class="hint-1">💡</button>
+        <button onclick="onHintClick(this)" class="hint-2">💡</button>
+        <button onclick="onHintClick(this)" class="hint-3">💡</button>
+            <div class="modal hide">
+			<h2 class="user-msg">You <span></span>!</h2>
+			<button class="restart-btn" onclick="onInit()" >Restart</button>
+		</div>
+    </div>
+        <tbody class="board"></tbody>
+    </table>
+
+    <script src="js/utils.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
