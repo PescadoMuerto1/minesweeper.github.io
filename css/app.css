@@ -20,9 +20,11 @@ background-color: black;}
 }
 .show{
     background-color: transparent;
+   
 }
 .marked{
-    background-color: red;
+    color:white;
+    font-size: 100%;
 }
 .sea-storm{
     position:absolute;
@@ -105,21 +107,21 @@ background-color: black;}
 
 .left-bar-container{
     left: 30%;
-    height: 40%;
+    height: 45%;
     display: flex;
     flex-direction: column;
     width: 10%;
     position:absolute;
-    margin-top: 22.5%;
+    margin-top: 22%;
 }
 .smile{
     height: 27%;
-    margin-bottom: 40%;
+    margin-bottom: 84%;
     font-size: 60px;
 }
 .smile img{
     height: 100%;
-    margin-inline-start: 27%;
+    margin-inline-start: 20%;
 }
 .lose-modal-container{
     margin-inline-start: 43%;
@@ -175,6 +177,18 @@ background-color: black;}
     width: 50%;
     font-family: "Hand Stamped JNL";
 
+}
+
+.score{
+    display: inline-block;
+    background-color: transparent;
+    border: none;
+    margin: 0px;
+    height: 10%;
+    width: 70%;
+    margin-left: 60%;
+    font-family: "Hand Stamped JNL";
+    font-size: 80%;
 }
 /* .board{
     background-color: ;
