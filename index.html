@@ -5,14 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minesweeper</title>
     <link rel="stylesheet" href="css/app.css" />
+    <link href="https://fonts.cdnfonts.com/css/turtles-2" rel="stylesheet">
+    <link href="https://db.onlinewebfonts.com/c/8cfa25f8b8c1ed3b8b50fe14f4d17067?family=Hand+Stamped+JNL" rel="stylesheet">
 </head>
 <body onload="onInit()" >
     
-    <img class="sea-storm" src="img/sea-storm.gif" alt=""> 
+    <img class="sea-storm" src="img/newspaper.png" alt=""> 
+    <div class="right-bar-container">
+        <div class="time">00</div>
+        <button onclick="onGameLevel(this,4,2)" class="level-btn"></button>
+        <button onclick="onGameLevel(this,8,14)" class="level-btn"></button>
+        <button onclick="onGameLevel(this,12,32)" class="level-btn btn3"></button>
+        <div class="lives">🖤 🖤 🖤</div>
+    </div>
     <!-- <img class="boat" src="img/USS_YMS-143.png" alt=""> -->
     <table class="board-container">
-        <div class="top-bar">
-        <div class="lives">🤍🤍🤍</div>
+        <!-- <div class="top-bar">
+        <div class="lives">🖤🖤🖤</div>
         <div class="smile">😃</div>
         <button onclick="onHintClick(this)" class="hint-1">💡</button>
         <button onclick="onHintClick(this)" class="hint-2">💡</button>
@@ -21,10 +30,26 @@
 			<h2 class="user-msg">You <span></span>!</h2>
 			<button class="restart-btn" onclick="onInit()" >Restart</button>
 		</div>
-    </div>
+    </div> -->
         <tbody class="board"></tbody>
     </table>
-
+    <div class="left-bar-container">
+        <div class="smile"><img src="img/smile.png">
+        </div>
+        <button class="level-btn"></button>
+        <button  class="level-btn"></button>
+        <button class="level-btn "></button>
+    </div>
+    <div class="lose-modal-container hide">
+        <img class="death-modal" src="img/death.png" alt="">
+        <button class="play-again" onclick="onInit()"></button>
+    </div>
+    <div class="win-modal-container">
+        <img class="win-modal" src="img/win.png" alt="">
+        <!-- <div class="win-time"></div> -->
+        <button class="play-again-win" onclick="onInit()"></button>
+    </div>
+     
     <script src="js/utils.js"></script>
     <script src="js/app.js"></script>
 </body>
