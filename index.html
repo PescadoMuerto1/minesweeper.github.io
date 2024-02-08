@@ -9,8 +9,7 @@
     <link href="https://db.onlinewebfonts.com/c/8cfa25f8b8c1ed3b8b50fe14f4d17067?family=Hand+Stamped+JNL" rel="stylesheet">
 </head>
 <body onload="onInit()" >
-    
-    <img class="sea-storm" src="img/newspaper.png" alt=""> 
+            <img class="sea-storm" src="img/newspaper.png" alt=""> 
     <div class="right-bar-container">
         <div class="time">00</div>
         <button onclick="onGameLevel(this,4,2)" class="level-btn"></button>
@@ -34,17 +33,16 @@
         <tbody class="board"></tbody>
     </table>
     <div class="left-bar-container">
-        <div class="smile"><img src="img/smile.png">
-        </div>
-        <button class="level-btn"></button>
-        <button  class="level-btn"></button>
-        <button class="level-btn "></button>
+        <div class="smile"><img src="img/smile.png"></div>
+        <button class="score score-1">00 Sec</button>
+        <button class="score score-2">00 Sec</button>
+        <button class="score score-3">00 Sec</button>
     </div>
     <div class="lose-modal-container hide">
         <img class="death-modal" src="img/death.png" alt="">
         <button class="play-again" onclick="onInit()"></button>
     </div>
-    <div class="win-modal-container">
+    <div class="win-modal-container hide">
         <img class="win-modal" src="img/win.png" alt="">
         <!-- <div class="win-time"></div> -->
         <button class="play-again-win" onclick="onInit()"></button>
