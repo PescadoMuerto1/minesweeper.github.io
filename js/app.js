@@ -2,10 +2,10 @@
 
 const MINE = '💣'
 const EMPTY = ' '
-const happySmile = '😃'
-const sadSmile = '😤'
-const winSmile = '😎'
-const live = '🤍' 
+const HAPPY_IMG = `<img src="img/happy-smile.png">`
+const SAD_IMG = `<img src="img/sad-smile.png">`
+const NORMAL_IMG = `<img src="img/smile.png">`
+const live = '🖤 ' 
 
 const MINE_IMG = '<img class"mine" src="img/mine.png">'
 
@@ -28,7 +28,7 @@ var gMarkedCount = 0
 var gLives = 3
 var gHints = 3
 var gIsHInt = false
-
+var gTimerInterval
 
 function onInit(){
     gMinesIdx = []
@@ -36,8 +36,10 @@ function onInit(){
     gOpenCellsCount = 0
     gMarkedCount = 0
     gLives = 3
+    gTimerInterval = 0
     handleLives()
-    hideModal()
+    hideModal('win')
+    hideModal('lose')
     gBoard = buildBoard()
     renderBoard(gBoard)
 }
@@ -45,6 +47,7 @@ function onInit(){
 function onPlay(){
     setMines()
     setMinesNegsCount()
+    startTimer()
 }
 
 function buildBoard(){
@@ -100,7 +103,7 @@ function renderBoard(board){
         for (var j = 0; j < board.length; j++) {
             const cell = board[i][j].value
             const className = `cell cell-${i}-${j}`
-            strHtml += `<td onclick="onCellClicked(this,${i},${j},event)" oncontextmenu="onCellMark(this,${i},${j})" class="${className}"></td>`
+            strHtml += `<td onclick="onCellClicked(this,${i},${j},event)" oncontextmenu="onCellMark(this,${i},${j})" class="${className}">${EMPTY}</td>`
         }
         strHtml += '</tr>'
     }
@@ -140,12 +143,12 @@ function handleMineClicked(elCell){
         elCell.innerText = MINE
         gLives --
         handleLives()
-        handleSmile(sadSmile)
+        handleSmile(SAD_IMG)
 
         setTimeout(()=>{
             elCell.classList.remove('show')
             elCell.innerText = EMPTY
-            handleSmile(happySmile)}, 1000)      
+            handleSmile(NORMAL_IMG)}, 1000)      
 }
 
 function onCellMark(elCell, i, j){
@@ -172,12 +175,13 @@ function checkGameOver(){
         && gLevel.MINES === gMarkedCount) gameOver(true)
 }
 
-function gameOver(isWin, i, j){
-    var txt = 'won'
+function gameOver(isWin){
+    clearInterval(gTimerInterval)
     if(!isWin){
-       txt = 'lost'
+        showModal('lose')
+    }else{
+        showModal('win')
     } 
-    showModal(txt)
 }
 
 function isInFirstCLick(idx){
@@ -235,8 +239,35 @@ function onHintClick(elHint){
 
 }
 
+function onGameLevel(elBtn, num, mines){
+    if(!gTimerInterval){
+        gLevel.SIZE = num   
+        gLevel.MINES = mines   
+        onInit()
+    }
+}
+
+function startTimer() {
+
+    if (gTimerInterval) clearInterval(gTimerInterval)
+
+    var startTime = Date.now()
+    gTimerInterval = setInterval(() => {
+        const timeDiff = Date.now() - startTime
+
+        const seconds = getFormatSeconds(timeDiff)
+        document.querySelector('.time').innerText =  seconds
+    }, 10)
+}
+
+function getFormatSeconds(timeDiff) {
+    const seconds = Math.floor(timeDiff / 1000)
+    return (seconds + '').padStart(2, '0')
+}
+
+
 function handleSmile(smileType){
-    const smile = document.querySelector('.smile').innerText = smileType
+    const smile = document.querySelector('.smile').innerHTML = smileType
 }     
    
 function handleLives(){
@@ -260,12 +291,13 @@ function handleHints(idx){
 }
 
 function showModal(txt) {
-    const elModal = document.querySelector('.modal')
-    document.querySelector('.modal span').innerText = txt
+    const elModal = document.querySelector(`.${txt}-modal-container`)
+    document.querySelector(`.board`).classList.add('hide')
     elModal.classList.remove('hide')
 }
 
-function hideModal() {
-    const elModal = document.querySelector('.modal')
+function hideModal(txt) {
+    const elModal = document.querySelector(`.${txt}-modal-container`)
+    document.querySelector(`.board`).classList.remove('hide')
     elModal.classList.add('hide')
 }
