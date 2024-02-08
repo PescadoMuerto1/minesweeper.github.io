@@ -19,7 +19,9 @@ var gGame = {
     shownCount: 0,
     markedCount: 0,
     secsPassed: 0
-}
+}    
+
+
 var gMinesIdx = []
 var gIsFirstCLick = true
 var gFirstCellIdx
@@ -29,6 +31,8 @@ var gLives = 3
 var gHints = 3
 var gIsHInt = false
 var gTimerInterval
+var gSeconds
+
 
 function onInit(){
     gMinesIdx = []
@@ -42,12 +46,14 @@ function onInit(){
     hideModal('lose')
     gBoard = buildBoard()
     renderBoard(gBoard)
+    updateTopScore()
 }
 
 function onPlay(){
     setMines()
     setMinesNegsCount()
     startTimer()
+    onAudio()
 }
 
 function buildBoard(){
@@ -117,6 +123,7 @@ function onCellClicked(elCell, i, j){
     if(gIsFirstCLick){
         gFirstCellIdx = {i:i, j:j}
         onPlay()
+       
         gBoard[i][j].isShown = true
     }
     if(gIsHInt){
@@ -128,7 +135,8 @@ function onCellClicked(elCell, i, j){
         return
     }
     if(gBoard[i][j].value === EMPTY) expandShown(i, j)
-
+    const a = new Audio('sound/click.mp3')
+    a.play
     gBoard[i][j].isShown = true
     elCell.classList.add('show')
     elCell.innerText = gBoard[i][j].value
@@ -161,10 +169,12 @@ function onCellMark(elCell, i, j){
     if(gBoard[i][j].isShown) return
     if(gBoard[i][j].isMarked){
         gBoard[i][j].isMarked = false
+        elCell.innerText = ''
         elCell.classList.remove('marked')
         gMarkedCount --
     }else{
         gBoard[i][j].isMarked = true
+        elCell.innerText = 'X'
         elCell.classList.add('marked') 
         gMarkedCount ++
         checkGameOver()  
@@ -180,6 +190,7 @@ function gameOver(isWin){
     if(!isWin){
         showModal('lose')
     }else{
+        checkTopScore(gLevel.SIZE / 4, gSeconds)
         showModal('win')
     } 
 }
@@ -255,8 +266,8 @@ function startTimer() {
     gTimerInterval = setInterval(() => {
         const timeDiff = Date.now() - startTime
 
-        const seconds = getFormatSeconds(timeDiff)
-        document.querySelector('.time').innerText =  seconds
+        gSeconds = getFormatSeconds(timeDiff)
+        document.querySelector('.time').innerText =  gSeconds
     }, 10)
 }
 
@@ -274,21 +285,42 @@ function handleLives(){
     document.querySelector('.lives').innerText = live.repeat(gLives)
 }
 
-function handleHints(idx){
-    const cellI = indexI
-    const cellJ = indexJ
-    for (var i = cellI - 1; i <= cellI + 1; i++) {
-        if (i < 0 || i >= gBoard.length) continue
-        for (var j = cellJ - 1; j <= cellJ + 1; j++) {
-            if (j < 0 || j >= gBoard[i].length) continue
-            if (i === idx.i && j === idx.j) return 
-            renderCell(i, j, gBoard[i][j].value, 'show')
-        }   
-        
-    }
-        const elHint = document.querySelector(`.hint-${gHints}`)
-        elHint.classList.remove('hide')
+function checkTopScore(level,time){
+    
+    if(localStorage.getItem(level) > time){
+        console.log(level, time)
+        localStorage.setItem(level, time)
+        updateTopScore()
+    }    
 }
+
+function updateTopScore(){
+    for (let i = 1; i < 4; i++) {
+        if (!localStorage.getItem(i)) {
+            localStorage.setItem(i,Infinity)
+        }
+        else{
+            const el = document.querySelector(`.score-${i}`)
+            el.innerText = `${localStorage.getItem(i)} Sec`
+        }
+    }    
+}
+
+// function handleHints(idx){
+//     const cellI = indexI
+//     const cellJ = indexJ
+//     for (var i = cellI - 1; i <= cellI + 1; i++) {
+//         if (i < 0 || i >= gBoard.length) continue
+//         for (var j = cellJ - 1; j <= cellJ + 1; j++) {
+//             if (j < 0 || j >= gBoard[i].length) continue
+//             if (i === idx.i && j === idx.j) return 
+//             renderCell(i, j, gBoard[i][j].value, 'show')
+//         }   
+        
+//     }
+//         const elHint = document.querySelector(`.hint-${gHints}`)
+//         elHint.classList.remove('hide')
+// }
 
 function showModal(txt) {
     const elModal = document.querySelector(`.${txt}-modal-container`)
@@ -300,4 +332,10 @@ function hideModal(txt) {
     const elModal = document.querySelector(`.${txt}-modal-container`)
     document.querySelector(`.board`).classList.remove('hide')
     elModal.classList.add('hide')
+}
+
+const audioEl = new Audio('sound/videoplayback (1).mp3')
+function onAudio(){
+    audioEl.volume = 0.3
+    audioEl.play()
 }
