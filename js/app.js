@@ -334,8 +334,8 @@ function hideModal(txt) {
     elModal.classList.add('hide')
 }
 
-// const audioEl = new Audio('sound/videoplayback (1).mp3')
-// function onAudio(){
-//     audioEl.volume = 0.3
-//     audioEl.play()
-// }
+const audioEl = new Audio('sound/videoplayback (1).mp3')
+function onAudio(){
+    audioEl.volume = 0.3
+    audioEl.play()
+}
